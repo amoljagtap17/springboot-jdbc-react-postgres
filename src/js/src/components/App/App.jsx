@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import fetch from 'unfetch'
 import { Table, Avatar, Spin } from 'antd'
 import { Container } from 'components/Layout'
+import { Footer } from 'components/Footer'
 
 const columns = [
   {
@@ -77,6 +78,7 @@ export const App = () => {
           pagination={false}
           rowKey="studentId"
         />
+        <Footer numberOfStudents={students.length} />
       </Container>
     )
   }
