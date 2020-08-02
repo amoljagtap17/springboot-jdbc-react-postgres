@@ -1,51 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import fetch from 'unfetch'
-import { Table, Avatar, Spin } from 'antd'
+import { Table, Spin, Modal } from 'antd'
 import { Container } from 'components/Layout'
 import { Footer } from 'components/Footer'
-
-const columns = [
-  {
-    title: '',
-    key: 'avatar',
-    render: (text, student) => (
-      <Avatar size="large">
-        {`${student.firstName.charAt(0).toUpperCase()}${student.lastName
-          .charAt(0)
-          .toUpperCase()}`}
-      </Avatar>
-    )
-  },
-  {
-    title: 'Student Id',
-    dataIndex: 'studentId',
-    key: 'studentId'
-  },
-  {
-    title: 'First Name',
-    dataIndex: 'firstName',
-    key: 'firstName'
-  },
-  {
-    title: 'Last Name',
-    dataIndex: 'lastName',
-    key: 'lastName'
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email'
-  },
-  {
-    title: 'Gender',
-    dataIndex: 'gender',
-    key: 'gender'
-  }
-]
+import { columns } from './tableColumns'
 
 export const App = () => {
   const [students, setStudents] = useState([])
   const [loading, setLoading] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   useEffect(() => {
     const getAllStudents = async () => {
@@ -60,6 +23,9 @@ export const App = () => {
 
     getAllStudents()
   }, [])
+
+  const openModal = () => setIsModalVisible(true)
+  const closeModal = () => setIsModalVisible(false)
 
   if (loading) {
     return (
@@ -78,7 +44,16 @@ export const App = () => {
           pagination={false}
           rowKey="studentId"
         />
-        <Footer numberOfStudents={students.length} />
+        <Modal
+          title="Add new Student"
+          visible={isModalVisible}
+          onOk={closeModal}
+          onCancel={closeModal}
+          width={1000}
+        >
+          <h1>Hello Modal with Antd</h1>
+        </Modal>
+        <Footer numberOfStudents={students.length} handleAddClick={openModal} />
       </Container>
     )
   }

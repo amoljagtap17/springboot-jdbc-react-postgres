@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import './Footer.css'
 import { Avatar } from 'antd'
 
-export const Footer = ({ numberOfStudents }) => (
+export const Footer = ({ numberOfStudents, handleAddClick }) => (
   <div className="footer">
     {numberOfStudents ? (
       <Avatar
@@ -13,6 +13,8 @@ export const Footer = ({ numberOfStudents }) => (
         {numberOfStudents}
       </Avatar>
     ) : null}
-    <Button type="primary">Add new student +</Button>
+    <Button type="primary" onClick={handleAddClick}>
+      Add new student +
+    </Button>
   </div>
 )
