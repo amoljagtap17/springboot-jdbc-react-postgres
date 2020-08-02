@@ -2,6 +2,7 @@ package com.springbootcode.springbootjdbcreactpostgres.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,11 +18,17 @@ public class StudentDataAccessService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Student> selectAllStudents() {
+    List<Student> selectAllStudents() {
 
         String sql = "SELECT student_id, first_name, last_name, email, gender FROM student";
 
-        List<Student> students = jdbcTemplate.query(sql, (resultSet, i) -> {
+        List<Student> students = jdbcTemplate.query(sql, mapStudentFromDB());
+
+        return students;
+    }
+
+    private RowMapper<Student> mapStudentFromDB() {
+        return (resultSet, i) -> {
 
             String studentIdStr = resultSet.getString("student_id");
             UUID studentId = UUID.fromString(studentIdStr);
@@ -32,8 +39,6 @@ public class StudentDataAccessService {
             Student.Gender gender = Student.Gender.valueOf(genderStr);
 
             return new Student(studentId, firstName, lastName, email, gender);
-        });
-
-        return students;
+        };
     }
 }
