@@ -11,17 +11,17 @@ export const App = () => {
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
+  const asyncGetAllStudents = async () => {
+    setLoading(true)
+
+    const res = await getAllStudents()
+    const students = await res.json()
+
+    setStudents(students)
+    setLoading(false)
+  }
+
   useEffect(() => {
-    const asyncGetAllStudents = async () => {
-      setLoading(true)
-
-      const res = await getAllStudents()
-      const students = await res.json()
-
-      setStudents(students)
-      setLoading(false)
-    }
-
     asyncGetAllStudents()
   }, [])
 
@@ -40,6 +40,7 @@ export const App = () => {
     return (
       <Container>
         <Table
+          style={{ marginBottom: '100px' }}
           dataSource={students}
           columns={columns}
           pagination={false}
@@ -52,7 +53,12 @@ export const App = () => {
           onCancel={closeModal}
           width={1000}
         >
-          <AddStudentForm />
+          <AddStudentForm
+            onSuccess={() => {
+              closeModal()
+              asyncGetAllStudents()
+            }}
+          />
         </Modal>
         <Footer numberOfStudents={students.length} handleAddClick={openModal} />
       </Container>

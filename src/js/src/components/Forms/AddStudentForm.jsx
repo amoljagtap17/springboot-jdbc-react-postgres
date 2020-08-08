@@ -5,7 +5,7 @@ import { Input, Button, Tag } from 'antd'
 import { addnewStudent } from 'api/student'
 import './AddStudentForm.css'
 
-export const AddStudentForm = () => {
+export const AddStudentForm = ({ onSuccess }) => {
   return (
     <Formik
       initialValues={{ firstName: '', lastName: '', email: '', gender: '' }}
@@ -23,6 +23,8 @@ export const AddStudentForm = () => {
         await addnewStudent(values)
 
         setSubmitting(false)
+
+        onSuccess()
       }}
     >
       {({ isSubmitting, submitForm, isValid, touched }) => (
