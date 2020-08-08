@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import fetch from 'unfetch'
 import { Table, Spin, Modal } from 'antd'
+import { getAllStudents } from 'api/student'
 import { Container } from 'components/Layout'
 import { Footer } from 'components/Footer'
 import { AddStudentForm } from 'components/Forms'
@@ -12,17 +12,17 @@ export const App = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   useEffect(() => {
-    const getAllStudents = async () => {
+    const asyncGetAllStudents = async () => {
       setLoading(true)
 
-      const res = await fetch('/students')
+      const res = await getAllStudents()
       const students = await res.json()
 
       setStudents(students)
       setLoading(false)
     }
 
-    getAllStudents()
+    asyncGetAllStudents()
   }, [])
 
   const openModal = () => setIsModalVisible(true)

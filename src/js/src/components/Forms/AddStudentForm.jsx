@@ -2,6 +2,7 @@ import React from 'react'
 import * as Yup from 'yup'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { Input, Button, Tag } from 'antd'
+import { addnewStudent } from 'api/student'
 import './AddStudentForm.css'
 
 export const AddStudentForm = () => {
@@ -18,8 +19,9 @@ export const AddStudentForm = () => {
           .oneOf(['male', 'MALE', 'female', 'FEMALE'], 'Gender is incorrect')
           .required('Gender required')
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        console.log(JSON.stringify(values, null, 2))
+      onSubmit={async (values, { setSubmitting }) => {
+        await addnewStudent(values)
+
         setSubmitting(false)
       }}
     >
