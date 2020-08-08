@@ -23,7 +23,7 @@ export const AddStudentForm = () => {
         setSubmitting(false)
       }}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, submitForm, isValid, touched }) => (
         <Form>
           <Field name="firstName" placeholder="First name" as={Input} />
           <ErrorMessage name="firstName">
@@ -47,7 +47,10 @@ export const AddStudentForm = () => {
 
           <br />
 
-          <Button htmlType="submit" disabled={isSubmitting}>
+          <Button
+            onClick={() => submitForm()}
+            disabled={isSubmitting || (touched && !isValid)}
+          >
             Submit
           </Button>
         </Form>
