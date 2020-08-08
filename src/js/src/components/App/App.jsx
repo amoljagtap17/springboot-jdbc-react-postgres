@@ -3,6 +3,7 @@ import fetch from 'unfetch'
 import { Table, Spin, Modal } from 'antd'
 import { Container } from 'components/Layout'
 import { Footer } from 'components/Footer'
+import { AddStudentForm } from 'components/Forms'
 import { columns } from './tableColumns'
 
 export const App = () => {
@@ -51,7 +52,7 @@ export const App = () => {
           onCancel={closeModal}
           width={1000}
         >
-          <h1>Hello Modal with Antd</h1>
+          <AddStudentForm />
         </Modal>
         <Footer numberOfStudents={students.length} handleAddClick={openModal} />
       </Container>
