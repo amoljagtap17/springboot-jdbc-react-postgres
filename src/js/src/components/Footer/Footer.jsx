@@ -5,7 +5,7 @@ import { Avatar } from 'antd'
 
 export const Footer = ({ numberOfStudents, handleAddClick }) => (
   <div className="footer">
-    {numberOfStudents ? (
+    {numberOfStudents !== undefined ? (
       <Avatar
         size="large"
         style={{ backgroundColor: '#f56a00', marginRight: '5px' }}

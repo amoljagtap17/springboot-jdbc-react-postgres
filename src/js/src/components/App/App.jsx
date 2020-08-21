@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Spin, Modal } from 'antd'
+import { Table, Spin, Modal, Empty } from 'antd'
 import { getAllStudents } from 'api/student'
 import { Container } from 'components/Layout'
 import { Footer } from 'components/Footer'
 import { AddStudentForm } from 'components/Forms'
+import { errorNotification } from 'components/Notification'
 import { columns } from './tableColumns'
 
 export const App = () => {
@@ -14,11 +15,16 @@ export const App = () => {
   const asyncGetAllStudents = async () => {
     setLoading(true)
 
-    const res = await getAllStudents()
-    const students = await res.json()
+    try {
+      const res = await getAllStudents()
+      const students = await res.json()
 
-    setStudents(students)
-    setLoading(false)
+      setStudents(students)
+    } catch (err) {
+      errorNotification(err.error.message, err.error.error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -36,6 +42,26 @@ export const App = () => {
     )
   }
 
+  const commonElements = () => (
+    <>
+      <Modal
+        title="Add new Student"
+        visible={isModalVisible}
+        onOk={closeModal}
+        onCancel={closeModal}
+        width={1000}
+      >
+        <AddStudentForm
+          onSuccess={() => {
+            closeModal()
+            asyncGetAllStudents()
+          }}
+        />
+      </Modal>
+      <Footer numberOfStudents={students.length} handleAddClick={openModal} />
+    </>
+  )
+
   if (students && students.length) {
     return (
       <Container>
@@ -46,24 +72,15 @@ export const App = () => {
           pagination={false}
           rowKey="studentId"
         />
-        <Modal
-          title="Add new Student"
-          visible={isModalVisible}
-          onOk={closeModal}
-          onCancel={closeModal}
-          width={1000}
-        >
-          <AddStudentForm
-            onSuccess={() => {
-              closeModal()
-              asyncGetAllStudents()
-            }}
-          />
-        </Modal>
-        <Footer numberOfStudents={students.length} handleAddClick={openModal} />
+        {commonElements()}
       </Container>
     )
   }
 
-  return <h1>No Students found!</h1>
+  return (
+    <Container>
+      <Empty description={<h1>No Students found</h1>} />
+      {commonElements()}
+    </Container>
+  )
 }
