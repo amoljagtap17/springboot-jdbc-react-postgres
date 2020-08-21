@@ -1,5 +1,6 @@
 package com.springbootcode.springbootjdbcreactpostgres.student;
 
+import com.springbootcode.springbootjdbcreactpostgres.exception.ApiRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class StudentController {
 
     @GetMapping
     public List<Student> getAllStudents() {
-        throw new IllegalStateException("Oops cannot get all students!");
+        throw new ApiRequestException("Oops cannot get all students with custom exception!");
 //        return studentService.getAllStudents();
     }
 

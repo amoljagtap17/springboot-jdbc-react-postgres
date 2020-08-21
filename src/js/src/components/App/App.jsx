@@ -79,7 +79,7 @@ export const App = () => {
 
   return (
     <Container>
-      <Empty description={<h1>No Students found</h1>} />
+      <Empty description={<span>No Students found</span>} />
       {commonElements()}
     </Container>
   )
